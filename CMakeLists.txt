@@ -23,3 +23,4 @@ include(external/imgui.cmake)
 
 add_subdirectory(core)
 add_subdirectory(assignment/assignment7_lighting)
+add_subdirectory(assignment/finalProject)
