@@ -64,6 +64,21 @@ namespace qm
 		return roll;
 	};
 
+	inline ew::Mat4 billBoardRotate(ew::Camera camera, ew::Vec3 position)
+	{
+		ew::Vec3 up = ew::Vec3(0, -1, 0);
+		ew::Vec3 f = ew::Normalize(camera.position - position);
+		ew::Vec3 r = ew::Normalize(ew::Cross(up, f));
+		ew::Vec3 u = ew::Normalize(ew::Cross(f, r));
+
+		return ew::Mat4(
+			r.x, r.y, r.z, 0,
+			u.x, u.y, u.z, 0,
+			f.x, f.y, f.z, 0,
+			0, 0, 0, 1
+		);
+	}
+
 	inline ew::Mat4 Translate(ew::Vec3 t) 
 	{ 
 		ew::Mat4 n = Identity();
@@ -138,7 +153,7 @@ namespace qm
 		ew::Vec3 scale = ew::Vec3(1.0f, 1.0f, 1.0f);
 		ew::Mat4 getModelMatrix(ew::Camera camera) const
 		{
-			ew::Mat4 modelMatrix = qm::Translate(position) * RotateX(rotation.x) * RotateY(rotation.y) * RotateZ(rotation.z) * qm::Scale(scale);
+			ew::Mat4 modelMatrix = qm::Translate(position) * billBoardRotate(camera,position) * qm::Scale(scale);
 			return modelMatrix;
 		}
 	};

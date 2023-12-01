@@ -16,6 +16,7 @@
 #include <ew/cameraController.h>
 
 #include <qm/procGen.h>
+#include <qm/transformations.h>
 
 void framebufferSizeCallback(GLFWwindow* window, int width, int height);
 void resetCamera(ew::Camera& camera, ew::CameraController& cameraController);
@@ -99,13 +100,13 @@ int main() {
 	ew::Transform sphereTransform;
 	ew::Transform cylinderTransform;
 
-	ew::Transform verPlaneTransform;
+	qm::BillBoardTransform verPlaneTransform;
 
 	planeTransform.position = ew::Vec3(0, -1.0, 0);
 	sphereTransform.position = ew::Vec3(-1.5f, 0.0f, 0.0f);
 	cylinderTransform.position = ew::Vec3(1.5f, 0.0f, 0.0f);
 
-	verPlaneTransform.position = ew::Vec3(0, -1.0, 0);
+	verPlaneTransform.position = ew::Vec3(-1.0, 1.0, 0);
 
 	ew::Transform unlitRed;
 	ew::Transform unlitGreen;
@@ -195,7 +196,7 @@ int main() {
 		shader.setMat4("_Model", cylinderTransform.getModelMatrix());
 		cylinderMesh.draw();
 
-		shader.setMat4("_Model", verPlaneTransform.getModelMatrix());
+		shader.setMat4("_Model", verPlaneTransform.getModelMatrix(camera));
 		vertPlaneMesh.draw();
 
 		unlitShader.use();
