@@ -47,6 +47,7 @@ namespace ew {
 			0.0f, 0.0f, 0.0f, 1.0f
 		);
 	};
+
 	//Rotation around Z axis (roll) in radians
 	inline ew::Mat4 RotateZ(float rad) {
 		const float cosA = cosf(rad);
@@ -75,7 +76,7 @@ namespace ew {
 		ew::Mat4 m = ew::Mat4(
 			r.x, r.y, r.z, -ew::Dot(r, eyePos),
 			u.x, u.y, u.z, -ew::Dot(u, eyePos),
-			f.x, f.y, f.z, -ew::Dot(f, eyePos),
+			f.x, f.y, f.z, -ew::Dot(f, eyePos), //translation
 			0.0, 0.0, 0.0, 1.0);
 		return m;
 	}

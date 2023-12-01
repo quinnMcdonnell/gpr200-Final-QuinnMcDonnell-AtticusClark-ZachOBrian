@@ -209,4 +209,42 @@ namespace qm
 
 		return data;
 	}
+
+	ew::MeshData createVertPlane(float size, int subdivisions)
+	{
+		ew::MeshData data;
+		ew::Vertex v;
+
+		for (float row = 0; row <= subdivisions; row++)
+		{
+			for (float col = 0; col <= subdivisions; col++)
+			{
+				v.pos.x = size * (col / subdivisions);
+				v.pos.y = size * (row / subdivisions);
+				v.pos.z = 0;
+
+				v.normal = ew::Vec3(0, 0, 1);
+				v.uv = ew::Vec2(col / subdivisions, row / subdivisions);
+				data.vertices.push_back(v);
+			}
+		}
+
+		int columns = subdivisions + 1;
+		for (int row = 0; row < subdivisions; row++)
+		{
+			for (int col = 0; col < subdivisions; col++)
+			{
+				int start = row * columns + col;
+				data.indices.push_back(start);
+				data.indices.push_back(start + 1);
+				data.indices.push_back(start + columns + 1);
+
+				data.indices.push_back(start);
+				data.indices.push_back(start + columns + 1);
+				data.indices.push_back(start + columns);
+			}
+		}
+
+		return data;
+	}
 }

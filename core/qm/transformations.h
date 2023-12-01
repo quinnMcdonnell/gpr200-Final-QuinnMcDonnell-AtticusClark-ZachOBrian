@@ -2,6 +2,8 @@
 #include "../ew/ewMath/mat4.h"
 #include "../ew/ewMath/vec3.h"
 #include "../ew/ewMath/ewMath.h"
+#include "../ew/camera.h"
+#include "../ew/cameraController.h"
 
 namespace qm
 {
@@ -126,6 +128,17 @@ namespace qm
 		ew::Mat4 getModelMatrix() const
 		{
 			ew::Mat4 modelMatrix = qm::Translate(position)* RotateX(rotation.x)* RotateY(rotation.y)* RotateZ(rotation.z)* qm::Scale(scale);
+			return modelMatrix;
+		}
+	};
+
+	struct BillBoardTransform {
+		ew::Vec3 position = ew::Vec3(0.0f, 0.0f, 0.0f);
+		ew::Vec3 rotation = ew::Vec3(0.0f, 0.0f, 0.0f); //Euler angles (degrees)
+		ew::Vec3 scale = ew::Vec3(1.0f, 1.0f, 1.0f);
+		ew::Mat4 getModelMatrix(ew::Camera camera) const
+		{
+			ew::Mat4 modelMatrix = qm::Translate(position) * RotateX(rotation.x) * RotateY(rotation.y) * RotateZ(rotation.z) * qm::Scale(scale);
 			return modelMatrix;
 		}
 	};

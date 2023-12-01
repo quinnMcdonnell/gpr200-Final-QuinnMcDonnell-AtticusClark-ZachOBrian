@@ -15,6 +15,8 @@
 #include <ew/camera.h>
 #include <ew/cameraController.h>
 
+#include <qm/procGen.h>
+
 void framebufferSizeCallback(GLFWwindow* window, int width, int height);
 void resetCamera(ew::Camera& camera, ew::CameraController& cameraController);
 
@@ -79,6 +81,9 @@ int main() {
 	//Create cube
 	ew::Mesh cubeMesh(ew::createCube(1.0f));
 	ew::Mesh planeMesh(ew::createPlane(5.0f, 5.0f, 10));
+
+	ew::Mesh vertPlaneMesh(qm::createVertPlane(1.0f,10));
+
 	ew::Mesh sphereMesh(ew::createSphere(0.5f, 64));
 	ew::Mesh cylinderMesh(ew::createCylinder(0.5f, 1.0f, 32));
 
@@ -93,9 +98,14 @@ int main() {
 	ew::Transform planeTransform;
 	ew::Transform sphereTransform;
 	ew::Transform cylinderTransform;
+
+	ew::Transform verPlaneTransform;
+
 	planeTransform.position = ew::Vec3(0, -1.0, 0);
 	sphereTransform.position = ew::Vec3(-1.5f, 0.0f, 0.0f);
 	cylinderTransform.position = ew::Vec3(1.5f, 0.0f, 0.0f);
+
+	verPlaneTransform.position = ew::Vec3(0, -1.0, 0);
 
 	ew::Transform unlitRed;
 	ew::Transform unlitGreen;
@@ -185,6 +195,8 @@ int main() {
 		shader.setMat4("_Model", cylinderTransform.getModelMatrix());
 		cylinderMesh.draw();
 
+		shader.setMat4("_Model", verPlaneTransform.getModelMatrix());
+		vertPlaneMesh.draw();
 
 		unlitShader.use();
 
@@ -270,6 +282,8 @@ int main() {
 				ImGui::DragFloat3("Position", &_lights[3].position.x, 0.5f);
 				unlitBlue.position = _lights[3].position;
 			}
+
+			ImGui::Text("Target%f",camera.ViewMatrix());
 
 			ImGui::End();
 

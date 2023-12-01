@@ -92,6 +92,7 @@ namespace ew {
 		}
 		return mesh;
 	}
+
 	MeshData createSphere(float radius, int subdivisions)
 	{
 		MeshData mesh;
