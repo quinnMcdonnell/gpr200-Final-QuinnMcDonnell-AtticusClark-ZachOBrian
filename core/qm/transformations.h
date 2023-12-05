@@ -64,21 +64,6 @@ namespace qm
 		return roll;
 	};
 
-	inline ew::Mat4 billBoardRotate(ew::Camera camera, ew::Vec3 position)
-	{
-		ew::Vec3 up = ew::Vec3(0, -1, 0);
-		ew::Vec3 f = ew::Normalize(camera.position - position);
-		ew::Vec3 r = ew::Normalize(ew::Cross(up, f));
-		ew::Vec3 u = ew::Normalize(ew::Cross(f, r));
-
-		return ew::Mat4(
-			r.x, r.y, r.z, 0,
-			u.x, u.y, u.z, 0,
-			f.x, f.y, f.z, 0,
-			0, 0, 0, 1
-		);
-	}
-
 	inline ew::Mat4 Translate(ew::Vec3 t) 
 	{ 
 		ew::Mat4 n = Identity();
@@ -147,6 +132,23 @@ namespace qm
 		}
 	};
 
+	//Billboard Rotation Method
+	inline ew::Mat4 billBoardRotate(ew::Camera camera, ew::Vec3 position)
+	{
+		ew::Vec3 up = ew::Vec3(0, 1, 0);
+		ew::Vec3 f = ew::Normalize(camera.position - position); //Issues?
+		ew::Vec3 r = ew::Normalize(ew::Cross(up, f));
+		ew::Vec3 u = ew::Normalize(ew::Cross(f, r));
+
+		return ew::Mat4(
+			r.x, u.x, f.x, 0,
+			r.y, u.y, f.y, 0,
+			r.z, u.z, f.z, 0,
+			0, 0, 0, 1
+		);
+	}
+
+	//Billboared Transform
 	struct BillBoardTransform {
 		ew::Vec3 position = ew::Vec3(0.0f, 0.0f, 0.0f);
 		ew::Vec3 rotation = ew::Vec3(0.0f, 0.0f, 0.0f); //Euler angles (degrees)

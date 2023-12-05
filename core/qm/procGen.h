@@ -219,8 +219,8 @@ namespace qm
 		{
 			for (float col = 0; col <= subdivisions; col++)
 			{
-				v.pos.x = size * (col / subdivisions);
-				v.pos.y = size * (row / subdivisions);
+				v.pos.x = size * (col / subdivisions) - (size / 2);
+				v.pos.y = size * (row / subdivisions) - (size / 2);
 				v.pos.z = 0;
 
 				v.normal = ew::Vec3(0, 0, 1);

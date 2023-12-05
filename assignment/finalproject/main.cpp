@@ -78,9 +78,9 @@ int main() {
 	ew::Shader shader("assets/defaultLit.vert", "assets/defaultLit.frag");
 	ew::Shader unlitShader("assets/unlit.vert", "assets/unlit.frag");
 	unsigned int brickTexture = ew::loadTexture("assets/brick_color.jpg", GL_REPEAT, GL_LINEAR);
+	//unsigned int BBTexture = ew::loadTexture("assets/", GL_REPEAT, GL_LINEAR);
 
 	//Create cube
-	ew::Mesh cubeMesh(ew::createCube(1.0f));
 	ew::Mesh planeMesh(ew::createPlane(5.0f, 5.0f, 10));
 
 	ew::Mesh vertPlaneMesh(qm::createVertPlane(1.0f,10));
@@ -95,7 +95,6 @@ int main() {
 
 
 	//Initialize transforms
-	ew::Transform cubeTransform;
 	ew::Transform planeTransform;
 	ew::Transform sphereTransform;
 	ew::Transform cylinderTransform;
@@ -106,7 +105,7 @@ int main() {
 	sphereTransform.position = ew::Vec3(-1.5f, 0.0f, 0.0f);
 	cylinderTransform.position = ew::Vec3(1.5f, 0.0f, 0.0f);
 
-	verPlaneTransform.position = ew::Vec3(-1.0, 1.0, 0);
+	verPlaneTransform.position = ew::Vec3(0, 0, 0);
 
 	ew::Transform unlitRed;
 	ew::Transform unlitGreen;
@@ -184,8 +183,6 @@ int main() {
 		shader.setVec3("_CameraPosition", camera.position);
 
 		//Draw shapes
-		shader.setMat4("_Model", cubeTransform.getModelMatrix());
-		cubeMesh.draw();
 
 		shader.setMat4("_Model", planeTransform.getModelMatrix());
 		planeMesh.draw();
@@ -246,46 +243,6 @@ int main() {
 			}
 
 			ImGui::ColorEdit3("BG color", &bgColor.x);
-
-			if (ImGui::CollapsingHeader("Material"))
-			{
-				ImGui::DragFloat("Amibence", &_material.ambientK, 0.01f, 0.0f, 1.0f);
-				ImGui::DragFloat("Diffuse", &_material.diffuseK, 0.01f, 0.0f, 1.0f);
-				ImGui::DragFloat("Specular", &_material.specular, 0.01f, 0.0f, 1.0f);
-				ImGui::DragFloat("Shininess", &_material.shininess, 1.0f, 2.0f, 500.0f);
-			}
-			ImGui::DragInt("Number of Lights", &lights, 1, 0, 4);
-
-			if (ImGui::CollapsingHeader("Light"))
-			{
-				ImGui::DragFloat3("Color", &_lights[0].color.x, 0.05f, 0.0f, 1.0f);
-				ImGui::DragFloat3("Position", &_lights[0].position.x, 0.5f);
-				unlitRed.position = _lights[0].position;
-			}
-
-			if (ImGui::CollapsingHeader("Light 2"))
-			{
-				ImGui::DragFloat3("Color", &_lights[1].color.x, 0.05f, 0.0f, 1.0f);
-				ImGui::DragFloat3("Position", &_lights[1].position.x, 0.5f);
-				unlitGreen.position = _lights[1].position;
-			}
-
-			if (ImGui::CollapsingHeader("Light 3"))
-			{
-				ImGui::DragFloat3("Color", &_lights[2].color.x, 0.05f, 0.0f, 1.0f);
-				ImGui::DragFloat3("Position", &_lights[2].position.x, 0.5f);
-				unlitYellow.position = _lights[2].position;
-			}
-
-			if (ImGui::CollapsingHeader("Light 4"))
-			{
-				ImGui::DragFloat3("Color", &_lights[3].color.x, 0.05f, 0.0f, 1.0f);
-				ImGui::DragFloat3("Position", &_lights[3].position.x, 0.5f);
-				unlitBlue.position = _lights[3].position;
-			}
-
-			ImGui::Text("Target%f",camera.ViewMatrix());
-
 			ImGui::End();
 
 			ImGui::Render();
