@@ -127,7 +127,8 @@ namespace qm
 		ew::Vec3 scale = ew::Vec3(1.0f, 1.0f, 1.0f);
 		ew::Mat4 getModelMatrix() const
 		{
-			ew::Mat4 modelMatrix = qm::Translate(position)* RotateX(rotation.x)* RotateY(rotation.y)* RotateZ(rotation.z)* qm::Scale(scale);
+			ew::Mat4 modelMatrix = qm::Translate(position) * RotateX(rotation.x)
+				* RotateY(rotation.y) * RotateZ(rotation.z) * qm::Scale(scale);
 			return modelMatrix;
 		}
 	};
@@ -148,7 +149,7 @@ namespace qm
 		);
 	}
 
-	//Billboared Transform
+	//Billboard Transform
 	struct BillBoardTransform {
 		ew::Vec3 position = ew::Vec3(0.0f, 0.0f, 0.0f);
 		ew::Vec3 rotation = ew::Vec3(0.0f, 0.0f, 0.0f); //Euler angles (degrees)

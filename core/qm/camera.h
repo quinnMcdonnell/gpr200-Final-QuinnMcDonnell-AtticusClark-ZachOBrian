@@ -15,7 +15,7 @@ namespace qm {
 		float orthoSize; //Height of orthographic frustum
 		inline ew::Mat4 ViewMatrix() //World->View
 		{
-			return LookAt(position, target, ew::Vec3(0, 1, 0));
+			return ew::LookAt(position, target, ew::Vec3(0, 1, 0));
 		}
 
 		inline ew::Mat4 ProjectionMatrix() //View->Clip

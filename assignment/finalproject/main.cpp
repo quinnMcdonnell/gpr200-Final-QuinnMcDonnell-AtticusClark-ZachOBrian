@@ -17,6 +17,7 @@
 
 #include <qm/procGen.h>
 #include <qm/transformations.h>
+#include "assets/orbit.h"
 
 void framebufferSizeCallback(GLFWwindow* window, int width, int height);
 void resetCamera(ew::Camera& camera, ew::CameraController& cameraController);
@@ -29,6 +30,10 @@ ew::Vec3 bgColor = ew::Vec3(0.1f);
 
 ew::Camera camera;
 ew::CameraController cameraController;
+
+// orbit and controls
+akc::Orbit orbit;
+bool orbiting = false, orbitInitial = true;
 
 struct Light
 {
@@ -147,9 +152,35 @@ int main() {
 		float deltaTime = time - prevTime;
 		prevTime = time;
 
-		//Update camera
+		// Update camera - modified by Atticus Clark
 		camera.aspectRatio = (float)SCREEN_WIDTH / SCREEN_HEIGHT;
-		cameraController.Move(window, &camera, deltaTime);
+		if(orbiting) {
+			// fly camera breaks orbit function anyway
+			/*
+			if(orbitInitial) {
+				orbitInitial = false;
+				orbit.azimuth = cameraController.yaw;
+				orbit.polar = cameraController.pitch;
+			}
+			*/
+
+			if(orbitInitial) {
+				orbitInitial = false;
+				resetCamera(camera, cameraController);
+					// resetting the camera after using fly camera fixes orbiting
+				orbit.resetSettings(ew::Magnitude(camera.position - camera.target));
+			}
+
+			orbit.cameraOrbit(camera, deltaTime);
+		}
+		else {
+			if(!orbitInitial) {
+				orbitInitial = true;
+				cameraController.yaw = orbit.yaw;
+				cameraController.pitch = orbit.pitch;
+			}
+			cameraController.Move(window, &camera, deltaTime);
+		}
 
 		//RENDER
 		glClearColor(bgColor.x, bgColor.y, bgColor.z, 1.0f);
@@ -240,6 +271,15 @@ int main() {
 				if (ImGui::Button("Reset")) {
 					resetCamera(camera, cameraController);
 				}
+			}
+
+			// orbit controls by Atticus Clark
+			if(ImGui::CollapsingHeader("Orbit")) {
+				ImGui::Checkbox("Orbiting", &orbiting);
+				ImGui::DragFloat("Horizontal Orbit Speed", &orbit.addYaw, 0.2f, -200.0f, 200.0f);
+				ImGui::DragFloat("Vertical Orbit Speed", &orbit.addPitch, 0.2f, -200.0f, 200.0f);
+				ImGui::DragFloat("Orbit Radius", &orbit.radius, 0.1f, 1.0f, 25.0f);
+
 			}
 
 			ImGui::ColorEdit3("BG color", &bgColor.x);
