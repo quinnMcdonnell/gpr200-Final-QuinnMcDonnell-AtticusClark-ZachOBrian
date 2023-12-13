@@ -104,19 +104,27 @@ int main() {
 	ew::Transform sphereTransform;
 	ew::Transform cylinderTransform;
 
-	qm::BillBoardTransform verPlaneTransform;
+	// qm::BillBoardTransform verPlaneTransform;
 
 	planeTransform.position = ew::Vec3(0, -1.0, 0);
 	sphereTransform.position = ew::Vec3(-1.5f, 0.0f, 0.0f);
 	cylinderTransform.position = ew::Vec3(1.5f, 0.0f, 0.0f);
 
-	verPlaneTransform.position = ew::Vec3(0, 0, 0);
+	// verPlaneTransform.position = ew::Vec3(0, 0, 0);
 
 	ew::Transform unlitRed;
 	ew::Transform unlitGreen;
 	ew::Transform unlitYellow;
 	ew::Transform unlitBlue;
 
+	// array of billboards, initialize positions - Atticus Clark
+	const int MAX_BILLBOARDS = 10;
+	int activeBillboards = 2;
+	qm::BillBoardTransform billboards[MAX_BILLBOARDS];
+
+	for(int i = 0; i < MAX_BILLBOARDS; i++) {
+		billboards[i].position = ew::Vec3(0, i * 2, 0);
+	}
 
 	//Light Array
 	Light _lights[4];
@@ -224,8 +232,14 @@ int main() {
 		shader.setMat4("_Model", cylinderTransform.getModelMatrix());
 		cylinderMesh.draw();
 
-		shader.setMat4("_Model", verPlaneTransform.getModelMatrix(camera));
-		vertPlaneMesh.draw();
+		// draw multiple billboards - Atticus Clark
+		for(int i = 0; i < activeBillboards; i++) {
+			shader.setMat4("_Model", billboards[i].getModelMatrix(camera));
+			vertPlaneMesh.draw();
+		}
+
+		// shader.setMat4("_Model", verPlaneTransform.getModelMatrix(camera));
+		// vertPlaneMesh.draw();
 
 		unlitShader.use();
 
@@ -273,13 +287,23 @@ int main() {
 				}
 			}
 
-			// orbit controls by Atticus Clark
+			// orbit controls - Atticus Clark
 			if(ImGui::CollapsingHeader("Orbit")) {
 				ImGui::Checkbox("Orbiting", &orbiting);
 				ImGui::DragFloat("Horizontal Orbit Speed", &orbit.addYaw, 0.2f, -200.0f, 200.0f);
 				ImGui::DragFloat("Vertical Orbit Speed", &orbit.addPitch, 0.2f, -200.0f, 200.0f);
 				ImGui::DragFloat("Orbit Radius", &orbit.radius, 0.1f, 1.0f, 25.0f);
+			}
 
+			// billboard controls - Atticus Clark
+			if(ImGui::CollapsingHeader("Billboards")) {
+				ImGui::DragInt("# of Billboards", &activeBillboards, 0.1f, 0, MAX_BILLBOARDS);
+
+				for(int i = 0; i < activeBillboards; i++) {
+					ImGui::PushID(i);
+					ImGui::DragFloat3("Billboard Position", &billboards[i].position.x, 0.1f);
+					ImGui::PopID();
+				}
 			}
 
 			ImGui::ColorEdit3("BG color", &bgColor.x);
