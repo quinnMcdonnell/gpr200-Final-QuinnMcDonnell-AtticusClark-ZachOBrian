@@ -26,7 +26,7 @@ int SCREEN_WIDTH = 1080;
 int SCREEN_HEIGHT = 720;
 
 float prevTime;
-ew::Vec3 bgColor = ew::Vec3(0.1f);
+ew::Vec3 bgColor = ew::Vec3(0.3, 0.3, 1);
 
 ew::Camera camera;
 ew::CameraController cameraController;
@@ -82,11 +82,16 @@ int main() {
 
 	ew::Shader shader("assets/defaultLit.vert", "assets/defaultLit.frag");
 	ew::Shader unlitShader("assets/unlit.vert", "assets/unlit.frag");
+	//Zach: Put in shader line for billboard
+	ew::Shader billboardingShader("assets/billboard.vert", "assets/billboard.frag");
 	unsigned int brickTexture = ew::loadTexture("assets/brick_color.jpg", GL_REPEAT, GL_LINEAR);
+
+	//
 	//unsigned int BBTexture = ew::loadTexture("assets/", GL_REPEAT, GL_LINEAR);
+	//
 
 	//Create cube
-	ew::Mesh planeMesh(ew::createPlane(5.0f, 5.0f, 10));
+	ew::Mesh planeMesh(ew::createPlane(8, 8, 10));
 
 	ew::Mesh vertPlaneMesh(qm::createVertPlane(1.0f,10));
 
