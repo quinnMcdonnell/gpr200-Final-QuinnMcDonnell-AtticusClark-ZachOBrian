@@ -28,6 +28,9 @@ int SCREEN_HEIGHT = 720;
 float prevTime;
 ew::Vec3 bgColor = ew::Vec3(0.3, 0.3, 1);
 
+bool move = false;
+ew::Vec3 _Vector = ew::Vec3(0, 0, 0.1f);
+
 ew::Camera camera;
 ew::CameraController cameraController;
 
@@ -130,6 +133,7 @@ int main() {
 	for(int i = 0; i < MAX_BILLBOARDS; i++) {
 		billboards[i].position = ew::Vec3(0, i * 2, 0);
 	}
+
 
 	//Light Array
 	Light _lights[4];
@@ -243,6 +247,11 @@ int main() {
 			vertPlaneMesh.draw();
 		}
 
+		if (move)
+		{
+			billboards[0].position = billboards[0].position + (sin(time) * _Vector);
+		}
+
 		// shader.setMat4("_Model", verPlaneTransform.getModelMatrix(camera));
 		// vertPlaneMesh.draw();
 
@@ -312,6 +321,18 @@ int main() {
 			}
 
 			ImGui::ColorEdit3("BG color", &bgColor.x);
+			if (ImGui::CollapsingHeader("Movement"))
+			{
+				ImGui::Checkbox("Move", &move);
+				ImGui::DragFloat3("Direction", &_Vector.x,0.01f, -0.1f, 0.1f);
+				if (ImGui::Button("Button", ImVec2(100, 0)))
+				{
+					billboards[0].position.x = 0;
+					billboards[0].position.y = 0;
+					billboards[0].position.z = 0;
+				}
+			}
+			
 			ImGui::End();
 
 			ImGui::Render();
@@ -342,3 +363,4 @@ void resetCamera(ew::Camera& camera, ew::CameraController& cameraController) {
 	cameraController.yaw = 0.0f;
 	cameraController.pitch = 0.0f;
 }
+

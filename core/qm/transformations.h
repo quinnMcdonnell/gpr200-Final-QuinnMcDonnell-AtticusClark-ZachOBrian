@@ -137,7 +137,7 @@ namespace qm
 	inline ew::Mat4 billBoardRotate(ew::Camera camera, ew::Vec3 position)
 	{
 		ew::Vec3 up = ew::Vec3(0, 1, 0);
-		ew::Vec3 f = ew::Normalize(camera.position - position); //Issues?
+		ew::Vec3 f = ew::Normalize(camera.position - position);
 		ew::Vec3 r = ew::Normalize(ew::Cross(up, f));
 		ew::Vec3 u = ew::Normalize(ew::Cross(f, r));
 
