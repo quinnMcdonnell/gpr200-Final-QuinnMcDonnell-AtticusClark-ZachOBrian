@@ -77,6 +77,7 @@ int main() {
 	ImGui::CreateContext();
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init();
+//Hello
 
 	//Global settings
 	glEnable(GL_CULL_FACE);
@@ -88,10 +89,8 @@ int main() {
 	//Zach: Put in shader line for billboard
 	ew::Shader billboardingShader("assets/billboard.vert", "assets/billboard.frag");
 	unsigned int brickTexture = ew::loadTexture("assets/brick_color.jpg", GL_REPEAT, GL_LINEAR);
-
-	//
-	//unsigned int BBTexture = ew::loadTexture("assets/", GL_REPEAT, GL_LINEAR);
-	//
+	unsigned int BBTexture = ew::loadTexture("assets/Blob.png", GL_REPEAT, GL_LINEAR);
+	
 
 	//Create cube
 	ew::Mesh planeMesh(ew::createPlane(8, 8, 10));
@@ -106,17 +105,22 @@ int main() {
 	ew::Mesh unlitsphereMeshY(ew::createSphere(0.125f, 32));
 	ew::Mesh unlitsphereMeshB(ew::createSphere(0.125f, 32));
 
+	ew::MeshData cubeMeshData = ew::createCube(0.5f);
+	ew::Mesh cubeMesh(cubeMeshData);
+
 
 	//Initialize transforms
 	ew::Transform planeTransform;
 	ew::Transform sphereTransform;
 	ew::Transform cylinderTransform;
+	ew::Transform cubeTransform;
 
 	// qm::BillBoardTransform verPlaneTransform;
 
 	planeTransform.position = ew::Vec3(0, -1.0, 0);
 	sphereTransform.position = ew::Vec3(-1.5f, 0.0f, 0.0f);
 	cylinderTransform.position = ew::Vec3(1.5f, 0.0f, 0.0f);
+	cubeTransform.position = ew::Vec3(0.0f, 0.0f, -0.5f);
 
 	// verPlaneTransform.position = ew::Vec3(0, 0, 0);
 
@@ -204,13 +208,15 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		shader.use();
-		glBindTexture(GL_TEXTURE_2D, brickTexture);
+
+		billboardingShader.use();
+		
 		shader.setInt("_Texture", 0);
 		shader.setMat4("_ViewProjection", camera.ProjectionMatrix() * camera.ViewMatrix());
 
 		//TODO: Render point lights
 		shader.setVec3("_Lights[0].position", _lights[0].position);
-		shader.setVec3("_Lights[0].color", _lights[0].color);
+		shader.setVec3("_Lights[0].color", _lights[0].color); 
 
 		shader.setVec3("_Lights[1].position", _lights[1].position);
 		shader.setVec3("_Lights[1].color", _lights[1].color);
@@ -230,28 +236,31 @@ int main() {
 
 		shader.setVec3("_CameraPosition", camera.position);
 
-		//Draw shapes
-
+		glBindTexture(GL_TEXTURE_2D, brickTexture);
 		shader.setMat4("_Model", planeTransform.getModelMatrix());
 		planeMesh.draw();
 
-		shader.setMat4("_Model", sphereTransform.getModelMatrix());
-		sphereMesh.draw();
+		shader.setMat4("_Model", cubeTransform.getModelMatrix());
+		cubeMesh.draw();
 
-		shader.setMat4("_Model", cylinderTransform.getModelMatrix());
-		cylinderMesh.draw();
+		billboardingShader.use();
+		glBindTexture(GL_TEXTURE_2D, BBTexture);
 
 		// draw multiple billboards - Atticus Clark
 		for(int i = 0; i < activeBillboards; i++) {
-			shader.setMat4("_Model", billboards[i].getModelMatrix(camera));
+			billboardingShader.setMat4("_Model", billboards[i].getModelMatrix(camera));
 			vertPlaneMesh.draw();
 		}
+<<<<<<< HEAD
 
 		if (move)
 		{
 			billboards[0].position = billboards[0].position + (sin(time) * _Vector);
 		}
 
+=======
+		
+>>>>>>> 8a781be68921f05b88f11242436fce4613aa30dd
 		// shader.setMat4("_Model", verPlaneTransform.getModelMatrix(camera));
 		// vertPlaneMesh.draw();
 
@@ -321,6 +330,7 @@ int main() {
 			}
 
 			ImGui::ColorEdit3("BG color", &bgColor.x);
+<<<<<<< HEAD
 			if (ImGui::CollapsingHeader("Movement"))
 			{
 				ImGui::Checkbox("Move", &move);
@@ -332,6 +342,8 @@ int main() {
 					billboards[0].position.z = 0;
 				}
 			}
+=======
+>>>>>>> 8a781be68921f05b88f11242436fce4613aa30dd
 			
 			ImGui::End();
 

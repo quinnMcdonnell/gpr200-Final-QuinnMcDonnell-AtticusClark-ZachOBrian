@@ -28,6 +28,8 @@ uniform int numLights;
 uniform Material _Material;
 uniform vec3 _CameraPosition;
 uniform sampler2D _Texture;
+uniform int _Mode;
+uniform vec3 _Color;
 
 void main(){
 	
@@ -40,7 +42,7 @@ void main(){
 	}
 
 	vec4 newTex = texture(_Texture,fs_in.UV);
-	vec3 texColor = newTex.rgb;
+	
 
 	vec3 normal = normalize(fs_in.WorldNormal);
 	vec3 position = fs_in.WorldPosition;
@@ -64,6 +66,10 @@ void main(){
 	totalLight += Spec;
 	}
 
-	texColor *= totalLight;
-	FragColor = vec4(texColor,1);
+	newTex.rgb *= totalLight;
+	if(newTex.a < 1)
+	{
+		discard;
+	}
+	FragColor = newTex;
 }

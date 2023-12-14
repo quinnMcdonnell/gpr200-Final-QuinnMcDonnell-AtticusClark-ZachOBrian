@@ -7,7 +7,7 @@ out Surface{
 	vec2 UV;
 	vec3 WorldPosition;
 	vec3 WorldNormal;
-}vs_out;
+}vs_out;  
 
 uniform mat4 _Model;
 uniform mat4 _ViewProjection;
