@@ -251,16 +251,13 @@ int main() {
 			billboardingShader.setMat4("_Model", billboards[i].getModelMatrix(camera));
 			vertPlaneMesh.draw();
 		}
-<<<<<<< HEAD
+
 
 		if (move)
 		{
 			billboards[0].position = billboards[0].position + (sin(time) * _Vector);
 		}
 
-=======
-		
->>>>>>> 8a781be68921f05b88f11242436fce4613aa30dd
 		// shader.setMat4("_Model", verPlaneTransform.getModelMatrix(camera));
 		// vertPlaneMesh.draw();
 
@@ -330,20 +327,18 @@ int main() {
 			}
 
 			ImGui::ColorEdit3("BG color", &bgColor.x);
-<<<<<<< HEAD
+
 			if (ImGui::CollapsingHeader("Movement"))
 			{
 				ImGui::Checkbox("Move", &move);
 				ImGui::DragFloat3("Direction", &_Vector.x,0.01f, -0.1f, 0.1f);
-				if (ImGui::Button("Button", ImVec2(100, 0)))
+				if (ImGui::Button("Reset", ImVec2(100, 0)))
 				{
 					billboards[0].position.x = 0;
 					billboards[0].position.y = 0;
 					billboards[0].position.z = 0;
 				}
 			}
-=======
->>>>>>> 8a781be68921f05b88f11242436fce4613aa30dd
 			
 			ImGui::End();
 
